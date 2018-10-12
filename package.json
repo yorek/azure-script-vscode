@@ -3,7 +3,14 @@
     "displayName": "Azure CLI Script syntax support",
     "description": "Language support for Azure CLI Script files",
     "version": "0.1.0",
-    "publisher": "yorek",
+    "publisher": "mauridb",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/yorek/azure-script-vscode"
+    },
+    "bugs": {
+        "url": "https://github.com/yorek/azure-script-vscode/issues"
+    },
     "license": "MIT",
     "engines": {
         "vscode": "^1.28.0"
