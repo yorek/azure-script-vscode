@@ -1,0 +1,26 @@
+{
+    "name": "azure-cli-script",
+    "displayName": "Azure CLI Script",
+    "description": "Azure CLI Script VS Code Extension",
+    "version": "0.0.1",
+    "publisher": "damauri",
+    "engines": {
+        "vscode": "^1.28.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "azs",
+            "aliases": ["Azure CLI Script", "azs"],
+            "extensions": [".azs"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "azs",
+            "scopeName": "source.azs",
+            "path": "./syntaxes/azs.tmLanguage.json"
+        }]
+    }
+}

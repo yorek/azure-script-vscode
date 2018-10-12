@@ -1,0 +1,170 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Azure CLI Script",
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#strings1"
+		},
+		{
+			"include": "#strings2"
+		},
+		{
+			"include": "#parameters"
+		},
+		{
+			"include": "#location"
+		},
+		{
+			"include": "#group"
+		},
+		{
+			"include": "#eventhubs"
+		},
+		{
+			"include": "#storage"
+		},
+		{
+			"include": "#cosmosdb"
+		},
+		{
+			"include": "#appservice"
+		},
+		{
+			"include": "#functionapp"
+		}
+	],
+	"repository": {
+		"comments": {
+			"patterns": [
+				{
+					"comment": "comment line",
+            		"match": "#[^\\n]*",
+            		"name": "comment.line.double-slash"
+				}	
+			]            
+		},
+		"location": {
+			"patterns": [
+				{
+					"name": "entity.name.function",
+					"match": "\\b(use)\\b"
+				},
+				{
+					"name": "keyword.other.azs",
+					"match": "\\b(location)\\b"
+				}
+			]
+		},
+		"group": {
+			"patterns": [
+				{
+					"name": "entity.name.function",
+					"match": "\\b(use|create)\\b"
+				},
+				{
+					"name": "keyword.other.azs",
+					"match": "\\b(group)\\b"
+				}
+			]
+		},
+		"eventhubs": {
+			"patterns": [
+				{
+					"name": "entity.name.function",
+					"match": "\\b(create|list)\\b"
+				},
+				{
+					"name": "keyword.other.azs",
+					"match": "\\b(eventhubs|eventhub|namespace|consumer-group|authorization-rule|keys)\\b"
+				}	
+			]
+		},
+		"storage": {
+			"patterns": [
+				{
+					"name": "entity.name.function",
+					"match": "\\b(create)\\b"
+				},
+				{
+					"name": "keyword.other.azs",
+					"match": "\\b(storage|account)\\b"
+				}	
+			]
+		},
+		"cosmosdb": {
+			"patterns": [
+				{
+					"name": "entity.name.function",
+					"match": "\\b(create)\\b"
+				},
+				{
+					"name": "keyword.other.azs",
+					"match": "\\b(cosmosdb|database|collection)\\b"
+				}	
+			]
+		},
+		"appservice": {
+			"patterns": [
+				{
+					"name": "entity.name.function",
+					"match": "\\b(create)\\b"
+				},
+				{
+					"name": "keyword.other.azs",
+					"match": "\\b(appservice|plan)\\b"
+				}	
+			]
+		},
+		"functionapp": {
+			"patterns": [
+				{
+					"name": "entity.name.function",
+					"match": "\\b(config-zip|create|set)\\b"
+				},
+				{
+					"name": "keyword.other.azs",
+					"match": "\\b(functionapp|deployment|source|config|appsettings)\\b"
+				}	
+			]
+		},
+		"parameters": {
+			"patterns": [
+				{
+					"comment": "parameter",
+					"match": "^([^:]*):",
+					"captures": {
+						"1": {
+							"name": "variable.parameter.azs"
+						}
+					}
+				}
+			]
+		},
+		"strings2": {
+			"name": "string.quoted.double.azs",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.azs",
+					"match": "\\\\."
+				}
+			]
+		},
+		"strings1": {
+			"name": "string.quoted.single.azs",
+			"begin": "'",
+			"end": "'",
+			"patterns": [
+				{
+					"name": "constant.character.escape.azs",
+					"match": "\\\\."
+				}
+			]
+		}
+	},
+	"scopeName": "source.azs"
+}
