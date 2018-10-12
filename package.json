@@ -1,9 +1,10 @@
 {
-    "name": "azure-cli-script",
-    "displayName": "Azure CLI Script",
-    "description": "Azure CLI Script VS Code Extension",
-    "version": "0.0.1",
-    "publisher": "damauri",
+    "name": "azure-cli-script-vscode",
+    "displayName": "Azure CLI Script syntax support",
+    "description": "Language support for Azure CLI Script files",
+    "version": "0.1.0",
+    "publisher": "yorek",
+    "license": "MIT",
     "engines": {
         "vscode": "^1.28.0"
     },

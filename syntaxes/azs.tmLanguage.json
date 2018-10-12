@@ -12,28 +12,13 @@
 			"include": "#strings2"
 		},
 		{
+			"include": "#variables"
+		},
+		{
 			"include": "#parameters"
-		},
+		},	
 		{
-			"include": "#location"
-		},
-		{
-			"include": "#group"
-		},
-		{
-			"include": "#eventhubs"
-		},
-		{
-			"include": "#storage"
-		},
-		{
-			"include": "#cosmosdb"
-		},
-		{
-			"include": "#appservice"
-		},
-		{
-			"include": "#functionapp"
+			"include": "#commands"
 		}
 	],
 	"repository": {
@@ -42,93 +27,9 @@
 				{
 					"comment": "comment line",
             		"match": "#[^\\n]*",
-            		"name": "comment.line.double-slash"
+            		"name": "comment.line"
 				}	
 			]            
-		},
-		"location": {
-			"patterns": [
-				{
-					"name": "entity.name.function",
-					"match": "\\b(use)\\b"
-				},
-				{
-					"name": "keyword.other.azs",
-					"match": "\\b(location)\\b"
-				}
-			]
-		},
-		"group": {
-			"patterns": [
-				{
-					"name": "entity.name.function",
-					"match": "\\b(use|create)\\b"
-				},
-				{
-					"name": "keyword.other.azs",
-					"match": "\\b(group)\\b"
-				}
-			]
-		},
-		"eventhubs": {
-			"patterns": [
-				{
-					"name": "entity.name.function",
-					"match": "\\b(create|list)\\b"
-				},
-				{
-					"name": "keyword.other.azs",
-					"match": "\\b(eventhubs|eventhub|namespace|consumer-group|authorization-rule|keys)\\b"
-				}	
-			]
-		},
-		"storage": {
-			"patterns": [
-				{
-					"name": "entity.name.function",
-					"match": "\\b(create)\\b"
-				},
-				{
-					"name": "keyword.other.azs",
-					"match": "\\b(storage|account)\\b"
-				}	
-			]
-		},
-		"cosmosdb": {
-			"patterns": [
-				{
-					"name": "entity.name.function",
-					"match": "\\b(create)\\b"
-				},
-				{
-					"name": "keyword.other.azs",
-					"match": "\\b(cosmosdb|database|collection)\\b"
-				}	
-			]
-		},
-		"appservice": {
-			"patterns": [
-				{
-					"name": "entity.name.function",
-					"match": "\\b(create)\\b"
-				},
-				{
-					"name": "keyword.other.azs",
-					"match": "\\b(appservice|plan)\\b"
-				}	
-			]
-		},
-		"functionapp": {
-			"patterns": [
-				{
-					"name": "entity.name.function",
-					"match": "\\b(config-zip|create|set)\\b"
-				},
-				{
-					"name": "keyword.other.azs",
-					"match": "\\b(functionapp|deployment|source|config|appsettings)\\b"
-				}	
-			]
 		},
 		"parameters": {
 			"patterns": [
@@ -137,9 +38,34 @@
 					"match": "^([^:]*):",
 					"captures": {
 						"1": {
-							"name": "variable.parameter.azs"
+							"name": "variable.parameter"
 						}
 					}
+				}
+			]
+		},
+		"commands": {
+			"patterns": [
+				{
+					"comment": "command line",
+					"match": "(.*\\s+)*([\\w|-]+)",
+					"captures": {
+						"1": {
+							"name": "keyword.other"
+						},
+						"2": {
+							"name": "entity.name.function"
+						}
+					}
+				}
+			]
+		},
+		"variables": {
+			"patterns": [
+				{
+					"comment": "variables",
+					"match": "\\$[\\w|-]*",
+					"name": "variable.name"
 				}
 			]
 		},
