@@ -2,7 +2,7 @@
 
 Add syntax highlighting and autocomplete support to [Azure Script](https://github.com/yorek/azure-script) files (.azs) to Visual Studio Code
 
-![Azure Script Syntax Highlighting in Visual Studio Code](https://raw.githubusercontent.com/yorek/azure-script-vscode/master/docs/assetes/azure-script-vscode.png)
+[Azure Script Syntax Highlighting in Visual Studio Code](./docs/assets/azure-script-vscode.png)
 
 ## Notes
 
