@@ -2,7 +2,7 @@
     "name": "azure-cli-script-vscode",
     "displayName": "Azure CLI Script syntax support",
     "description": "Language support for Azure CLI Script files",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "publisher": "mauridb",
     "icon": "azsc-icon.png",
     "repository": {
