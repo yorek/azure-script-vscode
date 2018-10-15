@@ -4,10 +4,7 @@
 	"patterns": [			
 		{
 			"include": "#comments"
-		},
-		{
-			"include": "#commands"
-		},
+		},		
 		{
 			"include": "#strings1"
 		},
@@ -15,14 +12,17 @@
 			"include": "#strings2"
 		},
 		{
-			"include": "#variables"
-		},
-		{
 			"include": "#file"
 		},
 		{
 			"include": "#parameters"
-		}		
+		},
+		{
+			"include": "#commands"
+		},
+		{
+			"include": "#variables"
+		}
 	],
 	"repository": {
 		"comments": {
@@ -51,15 +51,18 @@
 			"patterns": [
 				{
 					"comment": "resource-action-name line",
-					"match": "^(.*\\s+)*([\\w|-]+)\\s+([\"|'][\\w|-]*[\"|'])",
+					"match": "^(.*=\\s*)?(.*\\s+)*([\\w|-]+)\\s+([\"|'][\\w|-]*[\"|'])?",
 					"captures": {
 						"1": {
-							"name": "keyword.other"
+							"name": "variable.name"
 						},
 						"2": {
+							"name": "keyword.other"
+						},
+						"3": {
 							"name": "entity.name.function"
 						},
-						"3" :
+						"4" :
 						{
 							"name": "string.quoted"
 						}
