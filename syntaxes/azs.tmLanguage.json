@@ -1,9 +1,12 @@
 {
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
 	"name": "Azure CLI Script",
-	"patterns": [
+	"patterns": [			
 		{
 			"include": "#comments"
+		},
+		{
+			"include": "#commands"
 		},
 		{
 			"include": "#strings1"
@@ -15,11 +18,11 @@
 			"include": "#variables"
 		},
 		{
-			"include": "#parameters"
-		},	
+			"include": "#file"
+		},
 		{
-			"include": "#commands"
-		}
+			"include": "#parameters"
+		}		
 	],
 	"repository": {
 		"comments": {
@@ -47,14 +50,18 @@
 		"commands": {
 			"patterns": [
 				{
-					"comment": "command line",
-					"match": "(.*\\s+)*([\\w|-]+)",
+					"comment": "resource-action-name line",
+					"match": "^(.*\\s+)*([\\w|-]+)\\s+([\"|'][\\w|-]*[\"|'])",
 					"captures": {
 						"1": {
 							"name": "keyword.other"
 						},
 						"2": {
 							"name": "entity.name.function"
+						},
+						"3" :
+						{
+							"name": "string.quoted"
 						}
 					}
 				}
@@ -66,6 +73,15 @@
 					"comment": "variables",
 					"match": "\\$[\\w|-]*",
 					"name": "variable.name"
+				}
+			]
+		},
+		"file": {
+			"patterns": [
+				{
+					"comment": "file reference",
+					"match": "@.*",
+					"name": "emphasis"
 				}
 			]
 		},
