@@ -1,9 +1,10 @@
 from __future__ import print_function
+from multiprocessing.dummy import Pool as ThreadPool 
+import threading
 import subprocess
 import re
 import json
 from datetime import datetime
-
 
 TOKEN_SUBGROUPS = "__s"
 TOKEN_COMMAND = "__c"
@@ -11,8 +12,17 @@ TOKEN_ARGS = "__a"
 TOKEN_GARGS = "__ga"
 TOKEN_RIDARGS = "__rida"
 
+lock = threading.Lock()
+tc = 0 
+
 def get_commands(command = "az"):
-    print(command)
+    global tc
+    pool = ThreadPool(4) 
+    
+    lock.acquire()    
+    tc += 1
+    print("{} - {}".format(tc, command))    
+    lock.release()
 
     az_result = subprocess.check_output(
         "{0} --help; exit 0".format(command), 
@@ -35,42 +45,43 @@ def get_commands(command = "az"):
     se = re.findall(r"^(.*):", az_result, re.M|re.I)
     if se is not None:
         se = [s.strip() for s in se]
-        d = {}
-        
-        # subgroups
-        if TOKEN_SUBGROUPS in se:             
+        #print(se)
+        b = 0
+        e = len(se)
+
+        if TOKEN_SUBGROUPS in se:
+            d = {}
             b = se.index(TOKEN_SUBGROUPS)+1
-            e = len(se)            
             if TOKEN_COMMAND in se:
-                e = se.index(TOKEN_COMMAND)
-            for g in se[b:e]:
-                d[g] = get_commands(command + " " + g)
+                #print(se[b:e])
+                e = se.index(TOKEN_COMMAND)                
+                r = pool.map(get_commands, [command + " " + g for g in se[b:e]])
+                d = dict(zip(se[b:e], r))
 
-        # commands
-        if TOKEN_COMMAND in se:
-            b = se.index(TOKEN_COMMAND)+1
-            e = len(se)
-            if TOKEN_ARGS in se:
-                e = se.index(TOKEN_ARGS)
-            for g in se[b:e]:
-                d[g] = get_commands(command + " " + g)
+        if TOKEN_SUBGROUPS not in se:            
+            d = {}
+            if TOKEN_COMMAND in se:
+                #print(se[b:e])
+                b = se.index(TOKEN_COMMAND)+1
+                r = pool.map(get_commands, [command + " " + g for g in se[b:e]])
+                d = dict(zip(se[b:e], r))
 
-        # arguments
         if TOKEN_ARGS in se:            
-            args = []
+            d = []
             b = se.index(TOKEN_ARGS)+1
-            if TOKEN_GARGS in se:
-                e = se.index(TOKEN_GARGS)
+            e = se.index(TOKEN_GARGS)
+            #print(se[b:e])
             for a in se[b:e]:
                 if a.startswith("-"):
-                    args.append(a.split(":")[0].split(" ")[0].replace("--", "").strip())
+                    d.append(a.split(":")[0].split(" ")[0].replace("--", "").strip())
     
-            d["$args"] = args
-            #return args
+    lock.acquire()    
+    tc -= 1 
+    lock.release()
 
     return d
 
-if __name__ == "__main__":
+if __name__ == "__main__":    
     s = datetime.now()
     print("starting at: {0}".format(s))
     
