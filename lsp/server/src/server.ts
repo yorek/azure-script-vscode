@@ -16,7 +16,8 @@ import {
 	CompletionItem,
 	CompletionItemKind,
 	TextDocumentPositionParams,
-	Range
+	Range,
+	Position
 } from 'vscode-languageserver';
 
 import { azcmdmap } from "./az_command_map";
@@ -84,27 +85,65 @@ connection.onCompletion(
 		var document = documents.get(_textDocumentPosition.textDocument.uri)	
 		var position = _textDocumentPosition.position;
 
-		// TODO: get the text
-		// - from start of document, or
-		// - from the last ";"
-		let r: Range = {
-			start: {
-				line: position.line,
-				character: 0
-			},
-			end: {
-				line: position.line,
-				character: position.character
-			}
+		// Get all text from beginning to current cursor position
+		let rc: Range = {
+			start: { line: 0, character: 0 },
+			end: { line: position.line, character: position.character }
 		};
+		const dc = document.getText(rc);
 
-		const line = document.getText(r)
+		// Find the closest semicolon		
+		const lines: string[] = dc.split("\n");
+
+		var ic: number = -1;
+		var il: number = -1;
+		
+		if (lines != null)
+		{
+			for(var i: number=lines.length; i>0 ; i--){
+				const s: string = lines[i-1];
+				ic = s.lastIndexOf(";");
+				if (ic >= 0) { il = i; break; }
+			}
+		}
+
+		// Take all the text from the last semicolon if any
+		// or from the beginning of document if no semicolon is found
+		let r: Range;
+
+		if (ic >= 0)
+		{
+			r = {
+				start: {
+					line: il,
+					character: ic
+				},
+				end: {
+					line: position.line,
+					character: position.character
+				}
+			};
+		} else {
+			r = {
+				start: {
+					line: position.line,
+					character: 0
+				},
+				end: {
+					line: position.line,
+					character: position.character
+				}
+			};
+		}
+
+		const line = document.getText(r);
 		//connection.console.log(line)
 
+		// Get list of keywords
 		let keywordList: string[] = getCompletionText(line);
 		
+		// Create result
 		let result:CompletionItem[] = [];
-
 		keywordList.forEach(k =>
 			{
 				result.push(
@@ -121,10 +160,29 @@ connection.onCompletion(
 
 function getCompletionText(command:string): string[]
 {
-	var terms = command.split(" ");
+	const lines: string[] = command.split("\n");
+	var cleaned: string = "";
+
+	// remove comments
+	lines.forEach(line => {
+		var l = line.trim();
+		if (!l.startsWith("//")) {
+			cleaned += l = " "
+		}
+	});
+	cleaned = cleaned.trim();
+
+	if (cleaned == "") cleaned = command.trim();
+	
+	var terms = cleaned.split(" ");
 	var document:any = azcmdmap
 
 	terms.forEach(term => {
+		// stop looking for terms when the 
+		// open "{" is found as only $args contant should
+		// always be returned now, as cursors is inside a 
+		// parameter block 
+		if (term == "{") return;
 		if (term in document)
 		{
 			document = document[term] 
@@ -152,9 +210,10 @@ function getCompletionText(command:string): string[]
 
 // This handler resolve additional information for the item selected in
 // the completion list.
-/*
+
 connection.onCompletionResolve(
 	(item: CompletionItem): CompletionItem => {
+		/*
 		if (item.data === 1) {
 			item.detail = 'TypeScript details',
 			item.documentation = 'TypeScript documentation'
@@ -162,10 +221,10 @@ connection.onCompletionResolve(
 			item.detail = 'JavaScript details',
 			item.documentation = 'JavaScript documentation'
 		}
+		*/
 		return item;
 	}
 );
-*/
 
 /*
 connection.onDidOpenTextDocument((params) => {
